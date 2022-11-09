@@ -6,16 +6,16 @@ This repository contains my solutions to the assignments from the HarvardX cours
 ## MODULES
 
       Week 0: Search
-          degrees
-          tictactoe
+          degrees: 
+          tictactoe: 
       
       Week 1: Knowledge
-          knights
-          minesweeper
+          knights: 
+          minesweeper: 
       
       Week 2: Uncertainty
-          heredity
-          pagerank
+          heredity: An AI that assess the likelihood that a person will have a particular genetic trait.
+          pagerank: Write an AI to rank web pages by importance.
       
       Week 3: Optimization
           work in progress...
