@@ -18,7 +18,7 @@ This repository contains my solutions to the assignments from the HarvardX cours
           pagerank: Write an AI to rank web pages by importance.
       
       Week 3: Optimization
-          work in progress...
+          crossword: Write an AI to generate crossword puzzles.
       
       Week 4: Learning
           work in progress...
