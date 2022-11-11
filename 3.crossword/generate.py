@@ -180,7 +180,18 @@ class CrosswordCreator():
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        raise NotImplementedError
+        print (self.domains[var])
+        vals_ruleout = {val: 0 for val in self.domains[var]}
+        print ("vals ruleout: ", vals_ruleout)
+        for elem_val in self.domains[var]:
+            for neighbor_elem in self.crossword.neighbors(var):
+                for neighbor_val in self.domains[neighbor_elem]:
+                    if self.crossword.overlaps[var, neighbor_elem]:
+                        indx_elem, indx_n = self.crossword.overlaps[var, neighbor_elem]
+                        if elem_val[indx_elem] != neighbor_val[indx_n]:
+                            vals_ruleout[val] += 1
+        print ("valsruleout: ", vals_ruleout)
+        return (var)
 
     def select_unassigned_variable(self, assignment):
         """
@@ -232,8 +243,17 @@ class CrosswordCreator():
         if self.assignment_complete(assignment):
             return (assignment)
 
-        print ("here")
         var = self.select_unassigned_variable(assignment)
+        print ("var: ", var)
+        print ("assignment: ", assignment)
+        for elem in self.order_domain_values(var, assignment):
+            assignment[var] = val
+            if self.consistent(assignment):
+                self.domains[var] = {elem}
+                self.ac3([(neighbor, var) for neighbor in self.crossword.neighbors(var)])
+                result = self.backtrack_ac3(assignment)
+                if result:
+                    return result
         print (var)
         print (assignment)
         print (self.domains)
