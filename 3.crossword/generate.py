@@ -171,7 +171,23 @@ class CrosswordCreator():
         Return True if `assignment` is consistent (i.e., words fit in crossword
         puzzle without conflicting characters); return False otherwise.
         """
-        raise NotImplementedError
+        val = []
+        for elem in assignment:
+            value_x = assignment[elem]
+            if value_x in val:
+                return False
+            else:
+                val.append(value_x)
+            if elem.length != len(value_x):
+                return False
+            for neighbor in self.crossword.neighbors(elem):
+                if neighbor in assignment:
+                    value_n = assignment[neighbor]
+                    if self.crossword.overlaps[elem, neighbor]:
+                        indx_x, indx_y = self.crossword.overlaps[elem, neighbor]
+                        if value_x[indx_x] != value_n[indx_y]:
+                            return False
+        return True
 
     def order_domain_values(self, var, assignment):
         """
@@ -180,18 +196,15 @@ class CrosswordCreator():
         The first value in the list, for example, should be the one
         that rules out the fewest values among the neighbors of `var`.
         """
-        print (self.domains[var])
-        vals_ruleout = {val: 0 for val in self.domains[var]}
-        print ("vals ruleout: ", vals_ruleout)
-        for elem_val in self.domains[var]:
-            for neighbor_elem in self.crossword.neighbors(var):
-                for neighbor_val in self.domains[neighbor_elem]:
-                    if self.crossword.overlaps[var, neighbor_elem]:
-                        indx_elem, indx_n = self.crossword.overlaps[var, neighbor_elem]
-                        if elem_val[indx_elem] != neighbor_val[indx_n]:
-                            vals_ruleout[val] += 1
-        print ("valsruleout: ", vals_ruleout)
-        return (var)
+        result = {}
+        for elem in self.domains[var]:
+            if elem not in assignment:
+                total = 0
+                for neighbor in self.crossword.neighbors(var):
+                    if elem in self.domains[neighbor]:
+                        total += 1
+                result[elem] = total
+        return sorted(result, key=lambda key: result[key])
 
     def select_unassigned_variable(self, assignment):
         """
@@ -207,23 +220,6 @@ class CrosswordCreator():
         # isolate the elements with fewest remaining values
         sort_len.sort(key=lambda x: (len(self.domains[x])))
         short_count = 0
-
-        # checks if one element is remaining as the shortest
-        # check if this while loop is even nescessary
-        bigger = 1
-        while (bigger != 0):
-            bigger = 0
-            for elem in self.domains:
-                if short_count == 0:
-                    short_count += 1
-                    shortest = len(self.domains[elem])
-                    print (shortest)
-                elif shortest < len(self.domains[elem]):
-                    short_count = 1
-                    shortest = len(self.domains[elem])
-                    bigger += 1
-                elif shortest > len(self.domains[elem]):
-                    sort_len.remove(elem)
         if len(sort_len) == 1:
             return (sort_len[0])
 
@@ -242,29 +238,15 @@ class CrosswordCreator():
         """
         if self.assignment_complete(assignment):
             return (assignment)
-
         var = self.select_unassigned_variable(assignment)
-        print ("var: ", var)
-        print ("assignment: ", assignment)
         for elem in self.order_domain_values(var, assignment):
-            assignment[var] = val
+            assignment[var] = elem
             if self.consistent(assignment):
-                self.domains[var] = {elem}
-                self.ac3([(neighbor, var) for neighbor in self.crossword.neighbors(var)])
-                result = self.backtrack_ac3(assignment)
+                result = self.backtrack(assignment)
                 if result:
                     return result
-        print (var)
-        print (assignment)
-        print (self.domains)
-        #implement check later
-        # call functions select_unassigned_variable(assignment)
-        # call function order_domain_values
-        # call function consistent
-        # call backtrack(assignment)
-        print (assignment)
-        return True
-        raise NotImplementedError
+            del assignment[var]
+        return None
 
 
 def main():
