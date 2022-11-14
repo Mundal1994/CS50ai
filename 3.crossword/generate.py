@@ -149,11 +149,11 @@ class CrosswordCreator():
         while arcs:
             elem_1, elem_2 = arcs.pop()
             if self.revise(elem_1, elem_2):
-                if self.domains[elem_1]:
-                    for elem_3 in self.crossword.neighbors(elem_1) - {elem_2}:
-                        arcs.append((elem_3, elem_1))
-                else:
+                if len(self.domains[elem_1]) == 0:
                     return False
+                for elem_3 in self.crossword.neighbors(elem_1):
+                    if elem_3 != elem_2:
+                        arcs.append((elem_3, elem_1))
         return True
 
     def assignment_complete(self, assignment):
@@ -204,7 +204,8 @@ class CrosswordCreator():
                     if elem in self.domains[neighbor]:
                         total += 1
                 result[elem] = total
-        return sorted(result, key=lambda key: result[key])
+        result_sorted = sorted(result, key=lambda key: result[key])
+        return result_sorted
 
     def select_unassigned_variable(self, assignment):
         """
