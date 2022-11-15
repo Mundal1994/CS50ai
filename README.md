@@ -21,7 +21,8 @@ This repository contains my solutions to the assignments from the HarvardX cours
           crossword: Write an AI to generate crossword puzzles.
       
       Week 4: Learning
-          work in progress...
+          shopping: Write an AI to predict whether online shopping customers will complete a purchase.
+		  nim: Write an AI that teaches itself to play Nim through reinforcement learning.
       
       Week 5: Neural Nerworks
           work in progress...
