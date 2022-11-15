@@ -95,31 +95,54 @@ def load_data(filename):
 	thistuple = (evidence, labels)
 	return (thistuple)
 
-def train_model(evidence, labels):
-    """
-    Given a list of evidence lists and a list of labels, return a
-    fitted k-nearest neighbor model (k=1) trained on the data.
-    """
-    raise NotImplementedError
 
+def train_model(evidence, labels):
+	"""
+	Given a list of evidence lists and a list of labels, return a
+	fitted k-nearest neighbor model (k=1) trained on the data.
+	"""
+	model = KNeighborsClassifier(n_neighbors=1)
+	model.fit(evidence, labels)
+	return model
 
 def evaluate(labels, predictions):
-    """
-    Given a list of actual labels and a list of predicted labels,
-    return a tuple (sensitivity, specificity).
+	"""
+	Given a list of actual labels and a list of predicted labels,
+	return a tuple (sensitivity, specificity).
 
-    Assume each label is either a 1 (positive) or 0 (negative).
+	Assume each label is either a 1 (positive) or 0 (negative).
 
-    `sensitivity` should be a floating-point value from 0 to 1
-    representing the "true positive rate": the proportion of
-    actual positive labels that were accurately identified.
+	`sensitivity` should be a floating-point value from 0 to 1
+	representing the "true positive rate": the proportion of
+	actual positive labels that were accurately identified.
 
-    `specificity` should be a floating-point value from 0 to 1
-    representing the "true negative rate": the proportion of
-    actual negative labels that were accurately identified.
-    """
-    raise NotImplementedError
-
+	`specificity` should be a floating-point value from 0 to 1
+	representing the "true negative rate": the proportion of
+	actual negative labels that were accurately identified.
+	"""
+	# collect information of True positive, true negative,
+	# false positive and false negative
+	total = 0
+	truePositive = 0
+	trueNegative = 0
+	falsePositive = 0
+	falseNegative = 0
+	for actual, predicted in zip(labels, predictions):
+		total += 1
+		if actual == predicted:
+			if predicted == 1:
+				truePositive += 1
+			else:
+				trueNegative += 1
+		else:
+			if predicted == 1:
+				falsePositive += 1
+			else:
+				falseNegative += 1
+	sensitivity = truePositive / (truePositive + falseNegative)
+	specificity = trueNegative / (trueNegative + falsePositive)
+	thistuple = (sensitivity, specificity)
+	return thistuple
 
 if __name__ == "__main__":
     main()
