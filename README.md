@@ -2,6 +2,7 @@
 
 This repository contains my solutions to the assignments from the HarvardX course cs50ai - Introduction to artificial intelligence with python.
 
+https://cs50.harvard.edu/ai/2020/weeks/0/ 
 
 ## MODULES
 
@@ -22,10 +23,10 @@ This repository contains my solutions to the assignments from the HarvardX cours
       
       Week 4: Learning
           shopping: Write an AI to predict whether online shopping customers will complete a purchase.
-		  nim: Write an AI that teaches itself to play Nim through reinforcement learning.
+	  nim: Write an AI that teaches itself to play Nim through reinforcement learning.
       
       Week 5: Neural Nerworks
-          work in progress...
+          traffic: Write an AI to identify which traffic sign appears in a photograph.
       
       Week 6: Language
           work in progress...
