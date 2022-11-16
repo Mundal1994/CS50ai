@@ -23,7 +23,7 @@ https://cs50.harvard.edu/ai/2020/weeks/0/
       
       Week 4: Learning
           shopping: Write an AI to predict whether online shopping customers will complete a purchase.
-	  nim: Write an AI that teaches itself to play Nim through reinforcement learning.
+		nim: Write an AI that teaches itself to play Nim through reinforcement learning.
       
       Week 5: Neural Nerworks
           traffic: Write an AI to identify which traffic sign appears in a photograph.
