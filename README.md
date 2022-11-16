@@ -25,7 +25,7 @@ https://cs50.harvard.edu/ai/2020/weeks/0/
           shopping: Write an AI to predict whether online shopping customers will complete a purchase.
 		nim: Write an AI that teaches itself to play Nim through reinforcement learning.
       
-      Week 5: Neural Nerworks
+      Week 5: Neural Networks
           traffic: Write an AI to identify which traffic sign appears in a photograph.
       
       Week 6: Language
