@@ -101,11 +101,10 @@ class NimAI():
         Return the Q-value for the state `state` and the action `action`.
         If no Q-value exists yet in `self.q`, return 0.
         """
-        print("get_q_value")
-        print ("self:", self.q)
-        print ("state: ", state)
-        print ("action: ", action)
-        raise NotImplementedError
+        for elem in self.q:
+            if elem[0] == state and elem[1] == action:
+                return (self.q[elem])
+        return (0)
 
     def update_q_value(self, state, action, old_q, reward, future_rewards):
         """
@@ -122,8 +121,8 @@ class NimAI():
         `alpha` is the learning rate, and `new value estimate`
         is the sum of the current reward and estimated future rewards.
         """
-        print("update_q_value")
-        raise NotImplementedError
+        temp = [tuple(state), action]
+        self.q[tuple(temp)] = old_q + (self.alpha * (reward + future_rewards - old_q))
 
     def best_future_reward(self, state):
         """
@@ -135,8 +134,14 @@ class NimAI():
         Q-value in `self.q`. If there are no available actions in
         `state`, return 0.
         """
-        print ("best_future_reward")
-        raise NotImplementedError
+        total = -1
+        for elem in self.q:
+            if elem[0] == state:
+                if self.q(elem) > total and self.q(elem) >= 0:
+                    total = self.q[elem]
+        if total != -1:
+            return (total)
+        return (0)
 
     def choose_action(self, state, epsilon=True):
         """
@@ -153,9 +158,17 @@ class NimAI():
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-        print ("choose_action")
-        raise NotImplementedError
-
+        if epsilon and random.random() <= self.epsilon or len(self.q) == 0:
+            return (random.choice(list(Nim.available_actions(state))))
+        value = -1
+        for elem in Nim.available_actions(state):
+            temp = self.get_q_value(state, elem)
+            if temp > value and temp >= 0:
+                action = elem
+                value = temp
+        if action:
+            return action
+        return (random.choice(list(Nim.available_actions(state))))
 
 def train(n):
     """
