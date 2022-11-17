@@ -29,4 +29,5 @@ https://cs50.harvard.edu/ai/2020/weeks/0/
           traffic: Write an AI to identify which traffic sign appears in a photograph.
       
       Week 6: Language
-          work in progress...
+          parser: Write an AI to parse sentences and extract noun phrases.
+	  questions: Write an AI to answer questions.
