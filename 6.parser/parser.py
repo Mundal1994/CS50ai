@@ -15,19 +15,26 @@ V -> "smiled" | "tell" | "were"
 """
 
 NONTERMINALS = """
-S -> DN VP
-DN -> NA | Det NA | Det NA Adv
-NC -> DN | DN Conj SA
+S -> NP | NP VP | VP | S Conj S | S P S
 AA -> Adj | Adj Adj | Adj Adj Adj
-AN -> AA NC | NC | AA V | AA V P DN
-PD -> P Det | Det
-VA -> V | Adv V | V Adv
-NA -> N | AA N | AA N P NC
-SA -> S | VA Det N | VA DN PD NA
-VP -> VA | VA Conj SA | NP | VA P AN | VA AN
-DV -> V Det DN | V Det AA V | VA
-NP -> DV | DV P DN | DV P DN Conj SA
+NP -> N | AA N | Adv NP | N Adv | Det N | Det NP | P NP
+VP -> V NP | V | Adv VP | V Adv
 """
+# First attempt
+# works but sometimes tree looked a bit wierd and had issues with np_chunk
+# so had to try and make a simpler version
+#S -> NP VP
+#NP -> NA | Det NA | Det NA Adv
+#NC -> NP | NP Conj SA
+#AA -> Adj | Adj Adj | Adj Adj Adj
+#AN -> AA NC | NC | AA V | AA V P NP
+#PD -> P Det | Det
+#VA -> V | Adv V | V Adv
+#NA -> N | AA N | AA N P NC
+#SA -> S | VA Det N | VA NP PD NA
+#VP -> VA | VA Conj SA | NV | VA P AN | VA AN
+#DV -> V Det NP | V Det AA V | VA
+#NV -> DV | DV P NP | DV P NP Conj SA
 
 grammar = nltk.CFG.fromstring(NONTERMINALS + TERMINALS)
 parser = nltk.ChartParser(grammar)
@@ -96,9 +103,14 @@ def np_chunk(tree):
     whose label is "NP" that does not itself contain any other
     noun phrases as subtrees.
     """
-    print ("np chunk. tree: ", tree)
-    raise NotImplementedError
-
+    chunks = []
+    for subtree in tree:
+        for children in subtree.subtrees(filter=lambda t: t.label()=='NP' and len(t) >= 1):
+            for elem in chunks:
+                if children in elem:
+                    chunks.pop()
+            chunks.append(children)
+    return (chunks)
 
 if __name__ == "__main__":
     main()
