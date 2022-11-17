@@ -22,9 +22,9 @@ AA -> Adj | Adj Adj | Adj Adj Adj
 AN -> AA NC | NC | AA V | AA V P DN
 PD -> P Det | Det
 VA -> V | Adv V | V Adv
-NA -> N | AA N | AA N PD NC
+NA -> N | AA N | AA N P NC
 SA -> S | VA Det N | VA DN PD NA
-VP -> VA | VA Conj SA | NP | VA PD AN
+VP -> VA | VA Conj SA | NP | VA P AN | VA AN
 DV -> V Det DN | V Det AA V | VA
 NP -> DV | DV P DN | DV P DN Conj SA
 """
