@@ -36,6 +36,7 @@ The preprocess function should accept a sentence as input and return a lowercase
 
 
 The NONTERMINALS global variable should be replaced with a set of context-free grammar rules that, when combined with the rules in TERMINALS, allow the parsing of all sentences in the sentences/ directory.
+
       - Each rules must be on its own line. Each rule must include the -> characters to denote which symbol is being replaced, and may optionally include | symbols if there are multiple ways to rewrite a symbol.
       - You do not need to keep the existing rule S -> N V in your solution, but your first rule must begin with S -> since S (representing a sentence) is the starting symbol.
       - You may add as many nonterminal symbols as you would like.
@@ -43,6 +44,7 @@ The NONTERMINALS global variable should be replaced with a set of context-free g
 
 
 The np_chunk function should accept a tree representing the syntax of a sentence, and return a list of all of the noun phrase chunks in that sentence.
+
       - For this problem, a “noun phrase chunk” is defined as a noun phrase that doesn’t contain other noun phrases within it. Put more formally, a noun phrase chunk is a subtree of the original tree whose label is NP and that does not itself contain other noun phrases as subtrees.
         - For example, if "the home" is a noun phrase chunk, then "the armchair in the home" is not a noun phrase chunk, because the latter contains the former as a subtree.
       - You may assume that the input will be a nltk.tree object whose label is S (that is to say, the input will be a tree representing a sentence).
