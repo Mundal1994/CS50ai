@@ -58,7 +58,19 @@ def load_data(data_dir):
     be a list of integer labels, representing the categories for each of the
     corresponding `images`.
     """
-    raise NotImplementedError
+    images = []
+    labels = []
+    i = 0
+    while i < NUM_CATEGORIES:
+        directory = os.path.join(data_dir, str(i))
+        for file in os.listdir(directory):
+            img = cv2.imread(os.path.join(directory, file))
+            resized = cv2.resize(img, (IMG_WIDTH, IMG_HEIGHT))
+            images.append(resized)
+            labels.append(i)
+        i += 1
+    result = (images, labels)
+    return (result)
 
 
 def get_model():
@@ -67,7 +79,56 @@ def get_model():
     `input_shape` of the first layer is `(IMG_WIDTH, IMG_HEIGHT, 3)`.
     The output layer should have `NUM_CATEGORIES` units, one for each category.
     """
-    raise NotImplementedError
+    #initialize the model and inputshape
+    model = tf.keras.models.Sequential()
+    inputShape = (IMG_WIDTH, IMG_HEIGHT, 3)
+
+    # define the first layer
+    # gave it 42 filters and 3x3 kernel
+    model.add(tf.keras.layers.Conv2D(42, (3, 3), input_shape=inputShape))
+    model.add(tf.keras.layers.Activation("relu"))
+
+    #model.add(tf.keras.layers.Conv2D(16, (3, 3), input_shape=inputShape))
+    #model.add(tf.keras.layers.Activation("relu"))
+    #model.add(tf.keras.layers.BatchNormalization())
+    #model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
+    #model.add(tf.keras.layers.Dropout(0.15))
+    
+    # adding additional layer with 84 filters and 3x3 kernel
+    model.add(tf.keras.layers.Conv2D(30, (3, 3), input_shape=inputShape))
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.BatchNormalization())
+    model.add(tf.keras.layers.Conv2D(30, (3, 3), input_shape=inputShape))
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.BatchNormalization())
+    model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
+    model.add(tf.keras.layers.Dropout(0.2))
+
+    model.add(tf.keras.layers.Conv2D(84, (3, 3), input_shape=inputShape))
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.BatchNormalization())
+    model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
+    model.add(tf.keras.layers.Dropout(0.2))
+
+    # flatten units
+    model.add(tf.keras.layers.Flatten())
+
+    # adding dense layer with 120 filters
+    model.add(tf.keras.layers.Dense(250, activation="relu"))
+    model.add(tf.keras.layers.Dropout(0.1))
+    model.add(tf.keras.layers.Dense(120, activation="relu"))
+    model.add(tf.keras.layers.Dropout(0.1))
+    model.add(tf.keras.layers.Activation("softmax"))
+
+    model.add(tf.keras.layers.Dense(NUM_CATEGORIES, activation="relu"))
+
+    # compile model before returning
+    model.compile(
+        optimizer="adam",
+        loss="binary_crossentropy",
+        metrics=["accuracy"]
+    )
+    return (model)
 
 
 if __name__ == "__main__":
