@@ -88,11 +88,11 @@ def get_model():
     model.add(tf.keras.layers.Conv2D(42, (3, 3), input_shape=inputShape))
     model.add(tf.keras.layers.Activation("relu"))
 
-    #model.add(tf.keras.layers.Conv2D(16, (3, 3), input_shape=inputShape))
-    #model.add(tf.keras.layers.Activation("relu"))
-    #model.add(tf.keras.layers.BatchNormalization())
-    #model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    #model.add(tf.keras.layers.Dropout(0.15))
+    model.add(tf.keras.layers.Conv2D(16, (3, 3), input_shape=inputShape))
+    model.add(tf.keras.layers.Activation("relu"))
+    model.add(tf.keras.layers.BatchNormalization())
+    model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
+    model.add(tf.keras.layers.Dropout(0.15))
     
     # adding additional layer with 84 filters and 3x3 kernel
     model.add(tf.keras.layers.Conv2D(30, (3, 3), input_shape=inputShape))
