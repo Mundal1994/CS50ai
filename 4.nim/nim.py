@@ -134,14 +134,10 @@ class NimAI():
         Q-value in `self.q`. If there are no available actions in
         `state`, return 0.
         """
-        total = -1
-        for elem in self.q:
-            if elem[0] == state:
-                if self.q(elem) > total and self.q(elem) >= 0:
-                    total = self.q[elem]
-        if total != -1:
-            return (total)
-        return (0)
+        total = 0
+        for elem in Nim.available_actions(state):
+            total = max(total, self.q.get((tuple(state), elem), 0))
+        return (total)
 
     def choose_action(self, state, epsilon=True):
         """
@@ -160,15 +156,11 @@ class NimAI():
         """
         if epsilon and random.random() <= self.epsilon or len(self.q) == 0:
             return (random.choice(list(Nim.available_actions(state))))
-        value = -1
-        for elem in Nim.available_actions(state):
-            temp = self.get_q_value(state, elem)
-            if temp > value and temp >= 0:
+        action = list(Nim.available_actions(state))[0]
+        for elem in list(Nim.available_actions(state))[1:]:
+            if self.q.get((tuple(state), elem), 0) > self.q.get((tuple(state), action), 0):
                 action = elem
-                value = temp
-        if action:
-            return action
-        return (random.choice(list(Nim.available_actions(state))))
+        return action
 
 def train(n):
     """
