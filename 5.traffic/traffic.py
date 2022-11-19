@@ -84,48 +84,30 @@ def get_model():
     inputShape = (IMG_WIDTH, IMG_HEIGHT, 3)
 
     # define the first layer
-    # gave it 42 filters and 3x3 kernel
-    model.add(tf.keras.layers.Conv2D(42, (3, 3), input_shape=inputShape))
-    model.add(tf.keras.layers.Activation("relu"))
-
-    model.add(tf.keras.layers.Conv2D(16, (3, 3), input_shape=inputShape))
-    model.add(tf.keras.layers.Activation("relu"))
-    model.add(tf.keras.layers.BatchNormalization())
-    model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
-    model.add(tf.keras.layers.Dropout(0.15))
-    
-    # adding additional layer with 84 filters and 3x3 kernel
-    model.add(tf.keras.layers.Conv2D(30, (3, 3), input_shape=inputShape))
-    model.add(tf.keras.layers.Activation("relu"))
-    model.add(tf.keras.layers.BatchNormalization())
-    model.add(tf.keras.layers.Conv2D(30, (3, 3), input_shape=inputShape))
+    # gave it 16 filters and 3x3 kernel
+    model.add(tf.keras.layers.Conv2D(16, (3, 3), input_shape=inputShape, padding="same"))
     model.add(tf.keras.layers.Activation("relu"))
     model.add(tf.keras.layers.BatchNormalization())
     model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
     model.add(tf.keras.layers.Dropout(0.2))
 
-    model.add(tf.keras.layers.Conv2D(84, (3, 3), input_shape=inputShape))
+    # second layer of 32 filters and 3x3 kernel
+    model.add(tf.keras.layers.Conv2D(32, (3, 3), padding="same"))
     model.add(tf.keras.layers.Activation("relu"))
     model.add(tf.keras.layers.BatchNormalization())
     model.add(tf.keras.layers.MaxPooling2D(pool_size=(2, 2)))
     model.add(tf.keras.layers.Dropout(0.2))
 
-    # flatten units
+    # flatten unit
     model.add(tf.keras.layers.Flatten())
 
-    # adding dense layer with 120 filters
-    model.add(tf.keras.layers.Dense(250, activation="relu"))
-    model.add(tf.keras.layers.Dropout(0.1))
-    model.add(tf.keras.layers.Dense(120, activation="relu"))
-    model.add(tf.keras.layers.Dropout(0.1))
-    model.add(tf.keras.layers.Activation("softmax"))
-
-    model.add(tf.keras.layers.Dense(NUM_CATEGORIES, activation="relu"))
+    # output layer with output units for NUM_CATEGORIES
+    model.add(tf.keras.layers.Dense(units=NUM_CATEGORIES, activation="softmax"))
 
     # compile model before returning
     model.compile(
         optimizer="adam",
-        loss="binary_crossentropy",
+        loss="categorical_crossentropy",
         metrics=["accuracy"]
     )
     return (model)
