@@ -2,6 +2,8 @@
 
 This repository contains my solutions to the assignments from the HarvardX course cs50ai - Introduction to artificial intelligence with python.
 
+Topics included graph search algorithms, adversarial search, knowledge representation, logical inference, probability theory, Bayesian networks, Markov models, constraint satisfaction, machine learning, reinforcement learning, neural networks, natural language processing.
+
 https://cs50.harvard.edu/ai/2020/weeks/0/ 
 
 ## MODULES
